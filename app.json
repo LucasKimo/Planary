@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "Travel_Manager_APP", 
     "name": "Travel_Manager_APP",
     "slug": "Travel_Manager_APP",
     "version": "1.0.0",
