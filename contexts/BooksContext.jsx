@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react"
+import { createContext, useEffect, useState } from "react"
 import { databases, client } from "../lib/appwrite"
 import { ID, Permission, Query, Role } from "react-native-appwrite"
 import { useUser } from "../hooks/useUser"
@@ -8,14 +8,14 @@ const COLLECTION_ID = "6871c0d6002a4dfbb860"
 
 export const BooksContext = createContext()
 
-export function BooksProvider({children}) { 
+export function BooksProvider({children}) {
   const [books, setBooks] = useState([])
   const { user } = useUser()
 
   async function fetchBooks() {
     try {
       const response = await databases.listDocuments(
-        DATABASE_ID,
+        DATABASE_ID, 
         COLLECTION_ID,
         [
           Query.equal('userId', user.$id)
@@ -31,9 +31,13 @@ export function BooksProvider({children}) {
 
   async function fetchBookById(id) {
     try {
+      const response = await databases.getDocument(
+        DATABASE_ID,
+        COLLECTION_ID,
+        id
+      )
 
-  
-      return response 
+      return response
     } catch (error) {
       console.log(error.message)
     }
@@ -41,7 +45,7 @@ export function BooksProvider({children}) {
 
   async function createBook(data) {
     try {
-      const newBook = await databases.createDocument(
+      await databases.createDocument(
         DATABASE_ID,
         COLLECTION_ID,
         ID.unique(),
@@ -49,7 +53,7 @@ export function BooksProvider({children}) {
         [
           Permission.read(Role.user(user.$id)),
           Permission.update(Role.user(user.$id)),
-          Permission.delete(Role.user(user.$id))
+          Permission.delete(Role.user(user.$id)),
         ]
       )
     } catch (error) {
@@ -59,7 +63,11 @@ export function BooksProvider({children}) {
 
   async function deleteBook(id) {
     try {
-      
+      await databases.deleteDocument(
+        DATABASE_ID,
+        COLLECTION_ID,
+        id,
+      )
     } catch (error) {
       console.log(error.message)
     }
@@ -68,17 +76,23 @@ export function BooksProvider({children}) {
   useEffect(() => {
     let unsubscribe
     const channel = `databases.${DATABASE_ID}.collections.${COLLECTION_ID}.documents`
-  
+
     if (user) {
       fetchBooks()
 
       unsubscribe = client.subscribe(channel, (response) => {
         const { payload, events } = response
+        console.log(events)
 
-        if (events[0].includes('create')) {
+        if (events[0].includes("create")) {
           setBooks((prevBooks) => [...prevBooks, payload])
         }
+
+        if (events[0].includes("delete")) {
+          setBooks((prevBooks) => prevBooks.filter((book) => book.$id !== payload.$id))
+        }
       })
+
     } else {
       setBooks([])
     }
