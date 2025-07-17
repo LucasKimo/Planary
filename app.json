@@ -1,12 +1,12 @@
 {
   "expo": {
-    "scheme": "Travel_Manager_APP", 
+    "scheme": "Travel_Manager_APP",
     "name": "Travel_Manager_APP",
     "slug": "Travel_Manager_APP",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
@@ -21,10 +21,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.Travel_Manager_APP"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "react-native-edge-to-edge"
+    ]
   }
 }

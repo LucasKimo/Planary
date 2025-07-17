@@ -49,6 +49,9 @@ const BookDetails = () => {
         <ThemedText>Written by {book.author}</ThemedText>
         <Spacer />
 
+        <ThemedText title={true}>Budget: {book.budget}</ThemedText>
+        <Spacer height={10} />
+
         <ThemedText title={true}>Book description:</ThemedText>
         <Spacer height={10} />
 

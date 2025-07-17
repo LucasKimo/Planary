@@ -16,13 +16,13 @@ const Books = () => {
 
   return (
     <ThemedView style={styles.container} safe={true}>
-
+      <Spacer />
+      <Spacer />
       <Spacer />
       <ThemedText title={true} style={styles.heading}>
         Your Reading List
       </ThemedText> 
 
-      < Spacer />
       <FlatList 
         data={books}
         keyExtractor={(item) => item.$id}
